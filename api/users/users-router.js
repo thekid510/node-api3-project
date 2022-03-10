@@ -70,7 +70,7 @@ router.get('/:id/posts', validateUserId, async (req,res,next) => {
     const result = await User.getUserPosts(req.params.id)
     res.json(result)
   } catch (err) {
-    
+    next(err)
   }
 });
 
@@ -81,11 +81,11 @@ router.post('/:id/posts', validateUserId, validatePost, async (req, res, next) =
   try {
     const result = await Post.insert({
       user_id: req.params.id,
-      text: req.text
+      text: req.text,
     })
     res.status(201).json(result)
   } catch (err) {
-    
+    next(err)
   }
 });
 
@@ -96,5 +96,6 @@ router.use((err, req, res, next)=> {
     stack: err.stack,
   })
 })
+
 module.exports = router
 // do not forget to export the router
